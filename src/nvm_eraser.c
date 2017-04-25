@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <errno.h>
 #include <signal.h>
+#include <unistd.h>
 #include <liblightnvm_cli.h>
 
 static int KEEP_RUNNING = 1;
@@ -16,7 +17,7 @@ void sighandler(int signum)
 		break;
 
 	case SIGUSR2:
-		KEEP_RUNNING =1 ;
+		KEEP_RUNNING = 0;
 		break;
 	default:
 		break;
@@ -60,6 +61,8 @@ int line_erase(struct nvm_cli *cli)
 		if (DO_ERASE) {
 			res = _vblk_erase(cli, vblk);
 			DO_ERASE = 0;
+		} else {
+			sleep(0.1);
 		}
 	}
 	
