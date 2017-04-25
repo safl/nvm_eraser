@@ -54,15 +54,14 @@ int line_erase(struct nvm_cli *cli)
 		return -1;
 	}
 
-	signal(SIGUSR1, sighandler);
-	signal(SIGUSR2, sighandler);
+	signal(SIGUSR1, &sighandler);
+	signal(SIGUSR2, &sighandler);
 
 	while (KEEP_RUNNING) {
+		pause();
 		if (DO_ERASE) {
-			res = _vblk_erase(cli, vblk);
 			DO_ERASE = 0;
-		} else {
-			sleep(0.1);
+			res = _vblk_erase(cli, vblk);
 		}
 	}
 	
